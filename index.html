@@ -57,13 +57,15 @@
                         <div hidden >
                             <div data-name="popover-content">
                                 <div class="input-group">
-                                <input type="text" class="form-control form-control-sm" value="https://api.allorigins.win/get?url=" placeholder="Enter proxy server url" name="proxyName" value="">
+                                <input type="url" id="proxyServerInput" class="form-control form-control-sm" value="https://api.allorigins.win/get?url=" placeholder="Enter proxy server url" name="proxyName">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit">
+                                    <button id="saveProxyServer" style="margin-left: 5px;" class="btn btn-primary" type="submit">
                                         <i class="bi bi-check2-circle"></i>
                                     </button>
                                 </div>
+                              
                                 </div>
+                                <div style="display: block;"><small ><a href="">Why you need to change ?</a></small></div>
                             </div>
                         </div>
                         <a id="setProxy" tabindex="0" style="height: 47px; margin-left: 5px; border-radius: 5px;" class="btn btn-lg btn-secondary" role="button" data-bs-toggle="popover" title="Change proxy server" ><i class="bi bi-gear-wide-connected"></i></a>
@@ -83,7 +85,7 @@
             </div>
             <div class="col-4">
                 <div class="alert alert-primary d-flex flex-column align-items-center text-center" role="alert">
-                    <i class="bi bi-type-bold mb-2" style="font-size: 2rem;"></i>
+                    <i class="bi bi-journal-album mb-2" style="font-size: 2rem;"></i>
                     <div>
                       <strong>Tip 1:</strong> Use descriptive and keyword-rich titles to improve your page's visibility.
                     </div>

@@ -1,4 +1,10 @@
 let proxyServer = "https://api.allorigins.win/get?url=";
+const tagListEmpty = ` 
+<div class="card">
+    <div class="card-body">
+    <p class="text-center mt-3">No tags found. Please try entering a URL and search. </p>
+  </div>
+</div>`
 
 function formatResponseTime(milliseconds) {
     if (milliseconds < 1000) {
@@ -20,8 +26,9 @@ async function checkSEO() {
     document.getElementById('status').innerHTML = '';
     document.getElementById("loadingStatus").innerHTML = "Approaching website ..."
 
-    if (!url) {
-        document.getElementById('status').textContent = ` Please enter a valid URL.`;
+    if (!url || !checkUrl(url)) {
+        document.getElementById('status').textContent = ` Please enter a valid URL, Eg : (https://www.example.com)`;
+        document.getElementById('tag-list').innerHTML = tagListEmpty;
         return;
     }
 
@@ -38,19 +45,19 @@ async function checkSEO() {
         if (!response.ok) {
             throw new Error('Failed to fetch the URL');
         };
-        
+
         document.getElementById("loadingStatus").innerHTML = "Getting response from the website ...";
         const data = await response.json();
-
-        // End timing
         const endTime = performance.now();
         const responseTime = endTime - startTime;
-        //document.getElementById("responseTime").innerHTML = responseTime.toFixed(2);
+
         document.getElementById("loadingStatus").innerHTML = "Got response 200 and start analyzing html...";
-        const html = data.contents; // HTML content of the fetched URL
+
+        const html = data.contents;
         const parser = new DOMParser();
-        const doc = await parser.parseFromString(html, 'text/html'); // Parse HTML to DOM
+        const doc = await parser.parseFromString(html, 'text/html');
         document.getElementById("loadingStatus").innerHTML = "Processing result for display...";
+
         // Get all <meta> tags from the document
         const metaTags = doc.getElementsByTagName('meta');
         const tagList = document.getElementById('tag-list');
@@ -61,15 +68,15 @@ async function checkSEO() {
             const name = tag.getAttribute('name');
             const property = tag.getAttribute('property');
             const content = tag.getAttribute('content');
-
+            const httpEquiv = tag.getAttribute('http-equiv');
             // Create the base object for the meta tag
             let tagObject = {
-                "Tag name": name || property || "Unknown",
+                "Tag name": name || property || httpEquiv || "Unknown name",
                 "Content": content || "No Content",
                 "isMatch": content ? true : false,
-                "IsFacebook": (property && property.includes('og:')) ? true : false,
-                "IsTwitter": (name && name.includes('twitter')) ? true : false,
-                "isGoogle": (name && name.includes('google')) ? true : false,
+                "IsFacebook": (property && property.includes('og:')),
+                "IsTwitter": (name && name.includes('twitter')),
+                "isGoogle": (name && name.includes('google')),
                 "fullTag": tag.outerHTML
             };
 
@@ -90,6 +97,7 @@ async function checkSEO() {
 
             // Add icon if isMatch is Yes
             let iconHTML = "";
+
             if (tagObject["isMatch"]) {
                 iconHTML = `<i class="bi bi-check-circle text-success ms-auto"></i> `;
             } else {
@@ -129,7 +137,7 @@ async function checkSEO() {
 
         // Display the overall status
         if (jsonResults.length > 0) {
-            document.getElementById('result').innerHTML = `<span class="badge bg-success rounded-pill">${jsonResults.length}</span> meta tags found in ${ formatResponseTime(responseTime)}`;
+            document.getElementById('result').innerHTML = `<span class="badge bg-success rounded-pill">${jsonResults.length}</span> meta tags found in ${formatResponseTime(responseTime)}`;
         } else {
             document.getElementById('status').textContent = 'No meta tags found.';
         }
@@ -140,12 +148,7 @@ async function checkSEO() {
     }
 }
 
-document.getElementById('tag-list').innerHTML = ` 
-<div class="card">
-    <div class="card-body">
-    <p class="text-center mt-3">No tags found. Please try entering a URL and search. </p>
-  </div>
-</div>`;
+document.getElementById('tag-list').innerHTML = tagListEmpty;
 
 document.getElementById('checkBtn').addEventListener('click', async () => {
     document.getElementById('loading').innerHTML = ` <div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div> </br> Searching meta tags , it may take while, we have to wait for response </br>`;
@@ -154,18 +157,29 @@ document.getElementById('checkBtn').addEventListener('click', async () => {
     document.getElementById("loadingStatus").innerHTML = "";
 });
 
-$(document).ready(function() {
-                    
+function checkUrl(input) {
+    try {
+        return new URL(input);
+    } catch (e) {
+        return false;
+    }
+}
+
+$(document).ready(function () {
+
     let options = {
         html: true,
-        title: "Optional: HELLO(Will overide the default-the inline title)",
-        //html element
-        //content: $("#popover-content")
-        content: $('[data-name="popover-content"]')
-        //Doing below won't work. Shows title only
-        //content: $("#popover-content").html()
-
+        content: $('[data-name="popover-content"]'),
     }
-    let exampleEl = document.getElementById('setProxy')
-     new bootstrap.Popover(exampleEl, options)
+    let exampleEl = document.getElementById('setProxy');
+    let popover = new bootstrap.Popover(exampleEl, options);
+
+    $('#saveProxyServer').click(function (event) {
+        event.preventDefault();
+        proxyServer = checkUrl($('#proxyServerInput').val());
+
+        if (!proxyServer) return;
+
+        popover.hide();
+    });
 })
