@@ -4,7 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta scope - Tool for analyzing website meta tags</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaScope - Analyze and Optimize Meta Tags</title>
+    <meta name="description" content="MetaScope is an intuitive tool for analyzing website meta tags, including SEO, social media, and verification tags. It highlights missing or mismatched tags and presents results in a user-friendly format.">
+    <meta name="keywords" content="MetaScope, meta tags analyzer, SEO tags, social media tags, website optimization, SEO tools, tag checker">
+    <meta name="author" content="MetaScope Team">
+    <meta property="og:title" content="MetaScope - Analyze and Optimize Meta Tags">
+    <meta property="og:description" content="MetaScope helps analyze website meta tags for SEO, social media, and verification, making it easy to optimize your site for search engines and sharing.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MetaScope - Analyze and Optimize Meta Tags">
+    <meta name="twitter:description" content="MetaScope helps analyze website meta tags for SEO, social media, and verification, making it easy to optimize your site for search engines and sharing.">
+    <meta name="google-site-verification" content="example-google-site-verification-code">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/png" href="./meta.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -35,12 +50,33 @@
                 class="form-control form-control-lg fs-5 w-100 w-md-80 text-center"
                 placeholder="Enter your url eg: https://example.com" id="url-input">
                 <small id="loadingStatus" style="height: 25px; font-size: 12px;"></small>
-            <button id="checkBtn" style="border-radius: 10px;" class="btn btn-success mb-3 btn-lg">Start analyzing the
-                website</button>
+                <div class="col-12 d-flex justify-content-center">
+                    <button id="checkBtn" style="border-radius: 10px; display: inline;" class="btn btn-success mb-3  btn-lg">Start analyzing the
+                        website</button>
+
+                        <div hidden >
+                            <div data-name="popover-content">
+                                <div class="input-group">
+                                <input type="url" id="proxyServerInput" class="form-control form-control-sm" value="https://api.allorigins.win/get?url=" placeholder="Enter proxy server url" name="proxyName">
+                                <div class="input-group-btn">
+                                    <button id="saveProxyServer" style="margin-left: 5px;" class="btn btn-primary" type="submit">
+                                        <i class="bi bi-check2-circle"></i>
+                                    </button>
+                                </div>
+                              
+                                </div>
+                                <div style="display: block;"><small ><a href="">Why you need to change ?</a></small></div>
+                            </div>
+                        </div>
+                        <a id="setProxy" tabindex="0" style="height: 47px; margin-left: 5px; border-radius: 5px;" class="btn btn-lg btn-secondary" role="button" data-bs-toggle="popover" title="Change proxy server" ><i class="bi bi-gear-wide-connected"></i></a>
+                        
+                </div>
+          
         </div>
         <div class="col-12 justify-content-center align-items-center">
             <div class="col-12" id="result"></div>
             <p class="text-center text-danger" id="status"></p>
+            
         </div>
         <div class="row">
             <div class="col-8">
@@ -49,7 +85,7 @@
             </div>
             <div class="col-4">
                 <div class="alert alert-primary d-flex flex-column align-items-center text-center" role="alert">
-                    <i class="bi bi-type-bold mb-2" style="font-size: 2rem;"></i>
+                    <i class="bi bi-journal-album mb-2" style="font-size: 2rem;"></i>
                     <div>
                       <strong>Tip 1:</strong> Use descriptive and keyword-rich titles to improve your page's visibility.
                     </div>
@@ -85,7 +121,8 @@
     </div>
 
     </div>
-
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="./checker.js"></script>
 </body>
 
