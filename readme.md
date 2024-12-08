@@ -3,7 +3,7 @@
 **MetaScope** is an intuitive tool for analyzing website meta tags, including SEO, social media, and verification tags. It highlights missing or mismatched tags and presents results in a clean, user-friendly format, making it easy to optimize your site for search engines and social sharing.
 
 ## Story Behind the Creation  
-I am a web developer who has worked on various types of websites. In the past, one of the crucial tasks I often faced was managing basic SEO implementation in websites. Many times, clients asked me to check the meta tags in their websites (new or existing). Initially, I manually checked each tag line by line in the code, which was tedious and time-consuming. Over time, I realized the need for a tool that could check basic tags all at once. This past experience inspired me to create **MetaScope**, a tool to streamline the process and make meta tag analysis quick and efficient.
+One of the crucial tasks I often faced was managing basic SEO implementation in websites. Many times, clients asked me to check the meta tags in their websites (new or existing). Initially, I manually checked each tag line by line in the code, which was tedious and time-consuming. Over time, I realized the need for a tool that could check basic tags all at once. This past experience inspired me to create **MetaScope**, a tool to streamline the process and make meta tag analysis quick and efficient.
 
 ## Features  
 - Analyze SEO meta tags for completeness and accuracy.  
