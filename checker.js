@@ -1,9 +1,11 @@
+
 async function checkSEO() {
     const url = document.getElementById('url-input').value;
 
     // Clear previous results
     document.getElementById('tag-list').innerHTML = '';
     document.getElementById('status').innerHTML = '';
+    document.getElementById("loadingStatus").innerHTML = "Approaching website ..."
 
     if (!url) {
         document.getElementById('status').textContent = ` Please enter a valid URL.`;
@@ -12,18 +14,25 @@ async function checkSEO() {
 
     try {
         // Use a proxy server to bypass CORS restrictions (AllOrigins or your custom proxy)
+        document.getElementById("loadingStatus").innerHTML = "Setting proxy server (api.allorigins.win) ...";
         const proxyUrl = 'https://api.allorigins.win/get?url=';
         const targetUrl = encodeURIComponent(url);
 
+        document.getElementById("loadingStatus").innerHTML = "Bypassing CORS restrictions (AllOrigins or your custom proxy) ...";
+      
         // Fetch the HTML content of the given URL through the proxy
         const response = await fetch(proxyUrl + targetUrl);
-        if (!response.ok) throw new Error('Failed to fetch the URL');
-
+        if (!response.ok) {
+            throw new Error('Failed to fetch the URL');
+        };
+        
+        document.getElementById("loadingStatus").innerHTML = "Getting response from the website ...";
         const data = await response.json();
+        document.getElementById("loadingStatus").innerHTML = "Got response 200 and start analyzing html...";
         const html = data.contents; // HTML content of the fetched URL
         const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html'); // Parse HTML to DOM
-
+        const doc = await parser.parseFromString(html, 'text/html'); // Parse HTML to DOM
+        document.getElementById("loadingStatus").innerHTML = "Processing result for display...";
         // Get all <meta> tags from the document
         const metaTags = doc.getElementsByTagName('meta');
         const tagList = document.getElementById('tag-list');
@@ -57,10 +66,10 @@ async function checkSEO() {
             const tagName = document.createElement('h5');
             tagName.classList.add('card-header', 'd-flex', 'justify-content-between');
 
-             // Create a div for icons to be aligned on the right
-             const iconDiv = document.createElement('div');
-             iconDiv.classList.add('d-flex', 'align-items-center'); // Ensuring icons are aligned properly
- 
+            // Create a div for icons to be aligned on the right
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('d-flex', 'align-items-center'); // Ensuring icons are aligned properly
+
             // Add icon if isMatch is Yes
             let iconHTML = "";
             if (tagObject["isMatch"]) {
@@ -102,7 +111,7 @@ async function checkSEO() {
 
         // Display the overall status
         if (jsonResults.length > 0) {
-            document.getElementById('status').textContent = `${jsonResults.length} meta tags found.`;
+            document.getElementById('result').innerHTML = `<span class="badge bg-success rounded-pill">${jsonResults.length}</span> meta tags found.`;
         } else {
             document.getElementById('status').textContent = 'No meta tags found.';
         }
@@ -113,4 +122,16 @@ async function checkSEO() {
     }
 }
 
-document.getElementById('checkBtn').addEventListener('click', checkSEO);
+document.getElementById('tag-list').innerHTML = ` 
+<div class="card">
+    <div class="card-body">
+    <p class="text-center mt-3">No tags found. Please try entering a URL and searching again. </p>
+  </div>
+</div>`;
+
+document.getElementById('checkBtn').addEventListener('click', async () => {
+    document.getElementById('loading').innerHTML = ` <div class="spinner-border mt-5" role="status"><span class="visually-hidden">Loading...</span></div> </br> Searching meta tags , it may take while </br>`;
+    await checkSEO();
+    document.getElementById('loading').innerHTML = '';
+    document.getElementById("loadingStatus").innerHTML = "";
+});
